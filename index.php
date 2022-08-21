@@ -1,19 +1,8 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "root";
+require_once "Config/DB.php";
+require_once "Routes/route.php";
 
-// Create connection
-$conn = new mysqli($servername, $username, $password);
-
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
-$conn->select_db("store");
-
-
-
+die("dfghsikfyhoasikdfhiko");
 
 if (isset($_POST["product_count_form"])){
     
