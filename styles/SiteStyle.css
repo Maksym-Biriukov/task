@@ -1,0 +1,15 @@
+.center {
+    text-align: center;
+}
+.TextSize {
+    font-size: medium;
+}
+.autorizationTable {
+    margin: auto;
+}
+.autorizationTable td:last-child {
+    text-align: right;
+}
+.productsTable {
+    margin: auto;
+}
