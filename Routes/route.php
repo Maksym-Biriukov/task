@@ -1,6 +1,18 @@
 <?php
 
-$route_path = $_SERVER['REQUEST_URI'];
+$subdir = $_ENV['SUBDIR'];
+
+function url_decode($subdir, $url_decoded){
+    return str_replace("/$subdir", '', $url_decoded);
+};
+
+function url_encode($subdir, $url_encoded) {
+    return "/$subdir".$url_encoded;
+};
+
+
+$route_path = url_decode($subdir, $_SERVER['REQUEST_URI']);
+
 
 switch ($route_path) {
 
