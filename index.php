@@ -2,8 +2,6 @@
 require_once "Config/DB.php";
 require_once "Routes/route.php";
 
-die("dfghsikfyhoasikdfhiko");
-
 if (isset($_POST["product_count_form"])){
     
     $updateproduct = "UPDATE `products` 
