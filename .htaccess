@@ -1,3 +1,8 @@
-RewriteEngine On
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(.*)$ /maxim-laravel/index.php 
+<IfModule mod_rewrite.c>
+
+    RewriteEngine On
+    RewriteBase /maxim-laravel/
+
+    # Handle Front Controller...
+    RewriteRule ^ index.php [L]
+</IfModule>
