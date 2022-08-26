@@ -1,5 +1,14 @@
 <div class="d-flex justify-content-center h-100 align-items-center">
     <form action="<?=url_encode($subdir, '/login');?>" method="post">
+        <?php
+        
+        if(isset($_SESSION['error_code'])){
+           ?>
+            <div class="alert alert-danger" role="alert">WRONG LOGIN OR PASSWORD</div>
+            <?php
+        }
+        ?>
+        
         <div class="form-floating ">
             <input type="text" name="login" class="form-control" id="floatingInput" placeholder="login">
             <label for="floatingInput">Login</label>

@@ -1,7 +1,10 @@
 <IfModule mod_rewrite.c>
 
     RewriteEngine On
-    RewriteBase /maxim-laravel/
+    RewriteBase /test/
+    RewriteCond %{REQUEST_FILENAME} !/(css|fonts|ico|js)/
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
 
     # Handle Front Controller...
     RewriteRule ^ index.php [L]

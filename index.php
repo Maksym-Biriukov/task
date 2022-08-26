@@ -4,9 +4,11 @@ require_once "vendor/autoload.php";
 $dotenv = \Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
+$subdir = $_ENV['SUBDIR'];
 
+// var_dump($_ENV);
 
-// var_dump($_ENV); exit;
+//var_dump($_ENV); exit;
 require_once "Views/Common/head.php";
 require_once "Config/DB.php";
 require_once "Routes/route.php";

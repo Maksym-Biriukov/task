@@ -33,9 +33,9 @@ function Model($db_con, $table, $idcol, $columns){
             $params = array_reverse($values); 
             
             while(strpos($sql, ":param")){
-                $sql = preg_replace("/\:param/", "'".array_pop($params)."'", $sql, 1);
+                $sql = preg_replace("/\:param/", array_pop($params), $sql, 1);
             }
-            
+            // echo $sql;
             $result = $db_con->query($sql);
             $return = [];
 

@@ -1,5 +1,5 @@
 <?php
-include "Models/Base.php";
+require_once "Models/Base.php";
 
 $table = "managers";
 $columns = ["login", "password"];

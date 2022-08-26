@@ -1,13 +1,16 @@
 <?php
+require_once "Controllers/IndexController.php";
+require_once "Controllers/AuthController.php";
+require_once "Controllers/LoginController.php";
+require_once "Controllers/ProductsController.php";
 
-$subdir = $_ENV['SUBDIR'];
 
-function url_decode($subdir, $url_decoded){
-    return str_replace("/$subdir", '', $url_decoded);
+function url_decode($subdir, $url_encoded){
+    return str_replace("/$subdir", '', $url_encoded);
 };
 
-function url_encode($subdir, $url_encoded) {
-    return "/$subdir".$url_encoded;
+function url_encode($subdir, $url_decoded) {
+    return "/$subdir".$url_decoded;
 };
 
 
@@ -18,19 +21,15 @@ switch ($route_path) {
 
     case '':
     case '/':
-        require_once "Controllers/IndexController.php";
-        break;
-
     case '/login':
-        require_once "Controllers/LoginController.php";
+        $login();
         break;
 
     case '/cart':
-        require_once "Controllers/ProductsController.php";
+        $chekAuth($cart);
         break;
 
     case '/about':
-        require_once "Controllers/IndexController.php";
         break;
 
     default:
