@@ -1,7 +1,19 @@
+render_cart_table();
+
+function render_cart_table() {
+    products = JSON.parse(sessionStorage.getItem("products")) || [];
+
+    let trsNewProducts = "<tr><th>Count</th><th>Name</th><th>Cost</th></tr>";
+
+    products.forEach((product) => {
+        trsNewProducts += `<tr><td>${product.count}</td><td>${product.name}</td><td>${product.cost}</td></td>`;
+    });
+
+    document.querySelector(".table_cart").innerHTML = trsNewProducts;
+}
+
 function add_to_cart() {
-    let allProducts = document.querySelectorAll(
-        ".all-products__table tr:not(:first-child)"
-    );
+    let allProducts = document.querySelectorAll(".all-products__table tr:not(:first-child)");
 
     let products = [];
     allProducts.forEach((product) => {
@@ -18,16 +30,41 @@ function add_to_cart() {
     let product_code = document.querySelector(".product_code_to_add").value;
 
     let product = products.filter((prod) => prod.sku == product_code);
-    let countProduct = document.querySelector(".product_count_to_add").value;
-    if (product.length == 0)
-        return alert("There is no product with such an SKU");
 
-    if (countProduct > product.count)
-        return alert("We have less count then you want");
+    let countProduct = parseInt(document.querySelector(".product_count_to_add").value);
+    if (product.length == 0) return alert("There is no product with such an SKU");
+    let productsStorage = JSON.parse(sessionStorage.getItem("products")) || [];
 
-    let trNewProduct = `<tr><td>${countProduct}</td><td>${
-        product[0].name
-    }</td><td>${product[0].cost * countProduct}</td></td>`;
+    let productStorage = {
+        sku: product_code,
+        name: product[0].name,
+        count: countProduct,
+        cost: countProduct * product[0].cost,
+    };
+    if (productStorage.count > product[0].count) {
+        alert("We have less then you entered");
+        return false;
+    }
+    let productTr = Array.from(allProducts)
+        .filter((prod) => prod.querySelectorAll("td")[0].innerHTML.trim() == product_code)[0]
+        .querySelector("td:nth-child(3)");
 
-    document.querySelector(".table_cart").innerHTML += trNewProduct;
+    productTr.innerHTML = parseInt(productTr.innerHTML) - countProduct;
+
+    if (
+        productsStorage.length == 0 ||
+        productsStorage.filter((prod) => prod.sku == product_code).length == 0
+    ) {
+        productStorage.cost = Math.round(productStorage.cost * 100) / 100;
+        productsStorage.push(productStorage);
+        sessionStorage.setItem("products", JSON.stringify(productsStorage));
+    } else {
+        for (var i = 0; productsStorage[i].sku != product_code; i++);
+        productsStorage[i].count += countProduct;
+        productsStorage[i].cost += Math.round(countProduct * product[0].cost * 100) / 100;
+
+        sessionStorage.setItem("products", JSON.stringify(productsStorage));
+    }
+
+    render_cart_table();
 }
