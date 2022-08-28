@@ -7,14 +7,30 @@
     </div>
 <div class="col mt-3">
     <table class="table table-bordered table_cart">
-    <tr>
-        <th>count</th>
-        <th>name</th>
-        <th>cost</th>
-    </tr>
+    
     
 
     </table>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#payment" onclick="total_payment()">Payment</button>
+
+    <div class="modal fade" id="payment" tabindex="-1" aria-labelledby="paymentLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="paymentLabel">Total sum</h5>
+        </div>
+        <div class="modal-body total_sum_output">
+        
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary form-control">Cash</button>
+            <button type="button" class="btn btn-primary form-control">Card</button>
+            <button type="button" class="btn btn-secondary form-control" data-bs-dismiss="modal">Close</button>    
+        </div>
+        </div>
+    </div>
+    </div>
+    
 </div>
 <div class="col mt-3">
     
@@ -45,6 +61,75 @@
          ;
         ?>
     </table>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addproduct">Add product</button>
+
+    <div class="modal fade" id="addproduct" tabindex="-1" aria-labelledby="addproductLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="addproductLabel">Add Product</h5>
+        </div>
+        <div class="modal-body">
+        <form action="index.php" method="post">
+        <div class="input-group">
+            <input
+                required
+                type="text"
+                id="product_name_new"
+                name="product_name_new"
+                class="form-control"
+                placeholder="Product's name"
+            />
+            <input
+                required
+                type="text"
+                id="product_new_cost"
+                name="product_new_cost"
+                class="form-control"
+                placeholder="Cost"
+            />
+            <input
+                type="submit"
+                class="btn btn-primary"
+                id="product_add_new"
+                value="Add new product"
+                name="product_add_new"
+            />
+        </div>
+    </form>
+        </div>
+        <div class="modal-footer mb-3">
+            <form action="index.php" method="post">
+                <div class="input-group">
+                    <input
+                        required
+                        type="text"
+                        id="product_name_new"
+                        name="product_code"
+                        class="form-control"
+                        placeholder="Product's code"
+                    />
+                    <input
+                        required
+                        type="text"
+                        id="product_new_cost"
+                        name="count_of_product"
+                        class="form-control"
+                        placeholder="Count"
+                    />
+                    <input
+                        type="submit"
+                        class="btn btn-primary"
+                        id="addProduct"
+                        value="Add product's count"
+                        name="product_count_form"
+                    />
+                </div>
+    </form>
+        </div>
+        </div>
+    </div>
+    </div>
 </div>
 </div>
 </div>

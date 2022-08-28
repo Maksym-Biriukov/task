@@ -25,7 +25,7 @@ if (isset($_POST["product_count_form"])){
     }
 
     
-    header("Location: /");
+    header("Location: /$subdir/cart");
 }
 else if(isset($_POST["product_add_new"])){
     $updateproduct = "INSERT INTO `products` (`name`,`cost`)
@@ -39,7 +39,7 @@ else if(isset($_POST["product_add_new"])){
     }
 
     
-    header("Location: /");
+    header("Location: /$subdir/cart");
 } else{
 
 ?>

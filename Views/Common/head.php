@@ -9,5 +9,7 @@
         <link href="/styles/SiteStyle.css" rel="stylesheet">
         <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
         <script src="resources/js/app.js" defer></script>
+        <script src="resources/js/bootstrap.bundle.min.js" defer></script>
+        <script src="resources/js/bootstrap.min.js" defer></script>
     </head>
     <body>

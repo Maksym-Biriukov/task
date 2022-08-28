@@ -13,7 +13,9 @@ function render_cart_table() {
 }
 
 function add_to_cart() {
-    let allProducts = document.querySelectorAll(".all-products__table tr:not(:first-child)");
+    let allProducts = document.querySelectorAll(
+        ".all-products__table tr:not(:first-child)"
+    );
 
     let products = [];
     allProducts.forEach((product) => {
@@ -31,8 +33,11 @@ function add_to_cart() {
 
     let product = products.filter((prod) => prod.sku == product_code);
 
-    let countProduct = parseInt(document.querySelector(".product_count_to_add").value);
-    if (product.length == 0) return alert("There is no product with such an SKU");
+    let countProduct = parseInt(
+        document.querySelector(".product_count_to_add").value
+    );
+    if (product.length == 0)
+        return alert("There is no product with such an SKU");
     let productsStorage = JSON.parse(sessionStorage.getItem("products")) || [];
 
     let productStorage = {
@@ -46,7 +51,10 @@ function add_to_cart() {
         return false;
     }
     let productTr = Array.from(allProducts)
-        .filter((prod) => prod.querySelectorAll("td")[0].innerHTML.trim() == product_code)[0]
+        .filter(
+            (prod) =>
+                prod.querySelectorAll("td")[0].innerHTML.trim() == product_code
+        )[0]
         .querySelector("td:nth-child(3)");
 
     productTr.innerHTML = parseInt(productTr.innerHTML) - countProduct;
@@ -61,10 +69,22 @@ function add_to_cart() {
     } else {
         for (var i = 0; productsStorage[i].sku != product_code; i++);
         productsStorage[i].count += countProduct;
-        productsStorage[i].cost += Math.round(countProduct * product[0].cost * 100) / 100;
+        productsStorage[i].cost +=
+            Math.round(countProduct * product[0].cost * 100) / 100;
 
         sessionStorage.setItem("products", JSON.stringify(productsStorage));
     }
 
     render_cart_table();
+}
+
+function total_payment() {
+    let totalSum = 0;
+    let cart = JSON.parse(sessionStorage.getItem("products"));
+    for (let i = 0; i < cart.length; i++) {
+        totalSum += cart[i].cost;
+    }
+    document.querySelector(
+        ".total_sum_output"
+    ).innerHTML = `Total sum: ${totalSum} PLN`;
 }
