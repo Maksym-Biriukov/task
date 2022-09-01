@@ -1,6 +1,7 @@
 <?php
 
 require_once "Models/Manager.php";
+require_once "Models/Session.php";
 
 $login = function() use ($Manager, $subdir){
 
@@ -20,11 +21,12 @@ $login = function() use ($Manager, $subdir){
             if (empty($user)){
                 die("WRONG LOGIN!!!");
             }
-            session_start();
             if ($pswd==$user[0]['password']){
                 $_SESSION['idManager'] = $user[0]['id'];
                 unset($_SESSION['error_code']);
+                
                 header("Location: ".$_ENV['APP_URL_BASE']."cart");
+
             }
             else
             {
@@ -37,6 +39,11 @@ $login = function() use ($Manager, $subdir){
         else{
             die("Login or password aren't set");
         }
+    }elseif(isset($_POST['logout_form'] )){
+        // var_dump($_SESSION);
+        unset($_SESSION['idManager']);
+        // var_dump($_SESSION);
+        header("Location: ".$_ENV['APP_URL_BASE']."login");
     }
     else{
         require_once "Views/Login/login.php";

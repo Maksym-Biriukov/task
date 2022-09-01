@@ -78,8 +78,8 @@ function add_to_cart() {
     render_cart_table();
 }
 
+let totalSum = 0;
 function total_payment() {
-    let totalSum = 0;
     let cart = JSON.parse(sessionStorage.getItem("products"));
     for (let i = 0; i < cart.length; i++) {
         totalSum += cart[i].cost;
@@ -87,4 +87,14 @@ function total_payment() {
     document.querySelector(
         ".total_sum_output"
     ).innerHTML = `Total sum: ${totalSum} PLN`;
+}
+function total_cash() {
+    sessionStorage.clear("products");
+    sessionStorage.setItem("totalCash", JSON.stringify(totalSum));
+    render_cart_table();
+}
+function total_card() {
+    sessionStorage.removeItem("products");
+    sessionStorage.setItem("totalCard", JSON.stringify(totalSum));
+    render_cart_table();
 }

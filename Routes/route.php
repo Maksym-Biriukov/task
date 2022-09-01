@@ -31,6 +31,12 @@ switch ($route_path) {
 
     case '/about':
         break;
+    case '/product/add':
+        $product_add_count();
+        break;
+    case '/product/create':
+        $product_add_new();
+        break;
 
     default:
         http_response_code(404);
