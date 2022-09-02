@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::redirect("/", "/login");
+
+Route::view("/login", "login")->name("login_page");
+Route::post("/login", "App\Http\Controllers\LoginController@login")->name("login");
+
+Route::get("/cart", "App\Http\Controllers\ProductsController@get")->name("cart_page");
+// Route::post("/cart", "ProductsController@")->name("cart");
