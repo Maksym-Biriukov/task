@@ -18,6 +18,7 @@ Auth::routes();
 
 Route::get("/login", "App\Http\Controllers\LoginController@get")->name("login_page");
 Route::post("/login", "App\Http\Controllers\LoginController@login")->name("login");
+Route::post("/logout", "App\Http\Controllers\LoginController@logout")->name("logout");
 
 Route::name("cart.")->prefix("/cart")->group(function(){
     Route::post("/", "App\Http\Controllers\ProductsController@addToCart")->name("add_to_cart");
