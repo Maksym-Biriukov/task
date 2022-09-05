@@ -15,7 +15,7 @@
     <body>
         <div class="container text-center mt-3">
             <div class="position-absolute top-0 end-0 mt-2 me-3">
-                <form action="<?=route('login_page');?>" method="post">
+                <form action="<?=route('logout');?>" method="post">
                     <input type="submit"  class="btn btn-danger" name="logout_form" value="Logout" onclick="sessionStorage.clear()">
                 </form>
             </div>

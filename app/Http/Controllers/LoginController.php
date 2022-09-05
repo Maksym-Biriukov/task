@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Manager;
 
 class LoginController extends Controller
@@ -11,24 +12,28 @@ class LoginController extends Controller
         if(($idManager = session()->get("idManager")) != ""){
             return redirect()->route('cart_page');
         }
-        return view("login_page");
+        return view("login");
     }
 
     public function login(Request $request){
         try{
-            $login = $request->input("login");
-            $password = md5(md5($request->input("password")));
-            $manager = Manager::where("login", $login)->firstOrFail();
-            $managerId = $manager['id'];
-            if ($password == $manager['password']){
+            $credentials = [
+                "login" => $request->input("login"),
+                "password" => $request->input("password")
+            ];
+
+            if (Auth::attempt($credentials)) {
+                $request->session()->regenerate();
+     
                 session([
                     'loginError' => '',
                     'idManager' => $managerId
                 ]);
 
-                return redirect()->route('cart_page');
+                return redirect()->intended('cart');
             }
-            throw new \Exception("Wrong password");
+            else
+                throw new \Exception("Wrong password");
         }
         catch(\Illuminate\Database\Eloquent\ModelNotFoundException $e){
             session([
