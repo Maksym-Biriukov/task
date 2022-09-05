@@ -22,7 +22,7 @@ class ProductsController extends Controller
             'cost' => $addProductCost
         ]);
 
-        return redirect()->route('cart_page');
+        return redirect()->route('cart.page');
     }
     public function add(Request $request)
     {
@@ -32,7 +32,7 @@ class ProductsController extends Controller
 
         $product = Product::where('id', $addProductCode)->update(['count' => $addProductCount]);
 
-        return redirect()->route('cart_page');
+        return redirect()->route('cart.page');
     }
     public function addToCart(Request $request)
     {
@@ -42,6 +42,7 @@ class ProductsController extends Controller
 
         $product = Product::where('id', $addProductCode)->update(['count' => $addProductCount]);
 
-        return redirect()->route('cart_page');
+        return redirect()->route('cart.page');
     }
+
 }
