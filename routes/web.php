@@ -21,8 +21,8 @@ Route::post("/login", "App\Http\Controllers\LoginController@login")->name("login
 Route::post("/logout", "App\Http\Controllers\LoginController@logout")->name("logout");
 
 Route::name("cart.")->prefix("/cart")->group(function(){
-    Route::post("/", "App\Http\Controllers\ProductsController@addToCart")->name("add_to_cart");
-    Route::get("/", "App\Http\Controllers\ProductsController@get")->name("cart_page");
+    Route::post("/", "App\Http\Controllers\ProductsController@addToCart")->name("add");
+    Route::get("/", "App\Http\Controllers\ProductsController@get")->name("page");
 });
 
 Route::name("product.")->prefix("/product")->group(function(){
