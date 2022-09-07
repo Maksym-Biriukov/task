@@ -10,7 +10,7 @@ class LoginController extends Controller
 {
     public function get(){
         if(($idManager = session()->get("idManager")) != ""){
-            return redirect()->route('cart_page');
+            return redirect()->route('cart.page');
         }
         return view("login");
     }
@@ -26,9 +26,10 @@ class LoginController extends Controller
                 $request->session()->regenerate();
      
                 session([
-                    'loginError' => '',
-                    'idManager' => $managerId
+                    'loginError' => ''
                 ]);
+
+                
 
                 return redirect()->intended('cart');
             }
@@ -39,13 +40,13 @@ class LoginController extends Controller
             session([
                 'loginError' => "Wrong login",
             ]);
-            return redirect()->route('login_page');
+            return redirect()->route('manager.login_page');
         }
         catch(\Exception $e){
             session([
                 'loginError' => $e->getMessage(),
             ]);
-            return redirect()->route('login_page');
+            return redirect()->route('manager.login_page');
         }
     }
 }

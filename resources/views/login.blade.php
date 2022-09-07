@@ -14,7 +14,7 @@
     </head>
     <body>
         <div class="d-flex justify-content-center h-100 align-items-center">
-            <form action="{{route('login')}}" method="post">        
+            <form action="{{route('manager.login')}}" method="post">        
                 @php
                 // $var = session()->get("loginError");
                 // dd($var);

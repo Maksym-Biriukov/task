@@ -20,17 +20,32 @@
                 </form>
             </div>
             <div class="row">
-                <div class="input-group">
+                <form method="post" action="<?=route('cart.add')?>">
+                    <div class="input-group">
                     <input type="text" class="form-control product_code_to_add" placeholder="Enter product's code" name="products_add_code">
                     <input type="text" class="form-control product_count_to_add" placeholder="Enter product's count" name="products_add_count">
-                    <button class="btn btn-primary" type="button" id="button-addon2" name="products_add_button" onclick="add_to_cart()">Add</button>
-                </div>
+                    <input class="btn btn-primary" type="submit" id="button-addon2" name="products_add_button"  value="Add   ">
+                    </div>
+                </form>
                 <div class="col mt-3">
                     <table class="table table-bordered table_cart">
+                        <th>
+                        SQU    
+                        </th>
+                        <th>
+                        Name
+                        </th>
+                        <th>
+                        Count      
+                        </th>
+                        <th>
+                        Cost     
+                        </th>
                      <?php
-                        
-                        foreach ($products as $product){
+                        dd(session()->get('cart'));
+                        foreach (session()->get('cart') as $product){
                             ?>
+
                             <tr>
                                 <td>
                                 <?=$product['id'];?>
@@ -42,7 +57,10 @@
                                 <?=$product['count'];?>
                                 </td>
                                 <td>
-                                <?=$product['cost'];?>
+                                <?=$product['cost']*$product['count'];?>
+                                </td>
+                                <td>
+                                <a href="<?=route('cart.delete_position', ['id' => $product['id']])?>" class="btn btn-danger">x</a>
                                 </td>
                             </tr>
                             
@@ -54,7 +72,10 @@
                     
                 
                     </table>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#payment" onclick="total_payment()">Payment</button>
+                    <form action="{{route('cart.clear')}}" method="post">
+                        <input type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#payment" onclick="total_payment()" value="Payment">
+                        <input type="submit" class="btn btn-danger" value="Clear">
+                    </form>
                 
                     <div class="modal fade" id="payment" tabindex="-1" aria-labelledby="paymentLabel" aria-hidden="true">
                         <div class="modal-dialog">
@@ -77,6 +98,10 @@
                     
                 </div>
                 <div class="col mt-3">
+                        @php 
+                        // dd($errors);
+                        @endphp
+                        
                     
                     <table class="table table-bordered all-products__table"><tr><th>SKU</th><th>Name</th><th>Count</th><th>Cost</th></tr>
                     
