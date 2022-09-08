@@ -59,7 +59,7 @@ class LoginController extends Controller
         // dd(session()->get("session_id"));
         $ses = Session::find(session()->get("session_id"));
         // dd(date("Y-m-d h:i:s"));
-        $ses->date_end = Carbon::now();
+        $ses->date_end = Carbon::now()->format("Y-m-d H:i:s");
         $ses->save();
         $this->guard()->logout();
 

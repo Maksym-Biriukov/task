@@ -11,7 +11,7 @@ class SessionsController extends Controller
     public function history()
     {
         $id = Auth::id();
-        $sessions = Session::where('id_manager', $id)->whereNotNull("date_end")->get();
+        $sessions = Session::where('id_manager', $id)->get();
         return view('sessions_history', ['sessions' => $sessions]);
     }
 }

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->double('cash_total')->default(0);
             $table->double('card_total')->default(0);
             $table->timestamp('date_start')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->double('date_end')->default(DB::raw('NULL'));
+            $table->timestamp('date_end')->default(DB::raw('NULL'));
             
         });
     }
