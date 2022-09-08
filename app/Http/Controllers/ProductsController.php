@@ -4,8 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
-use Illuminate\Contracts\View\Factory as ViewFactory;
-use Illuminate\Support\ViewErrorBag;
+use App\Models\Session;
 
 class ProductsController extends Controller
 {
@@ -13,6 +12,10 @@ class ProductsController extends Controller
         $data = []; 
         $data['products'] = Product::all();
         !session()->has('cart') && session()->put('cart', []);
+        $data['totalSum'] = 0;
+        foreach(session()->get('cart') as $product){
+            $data['totalSum'] += floatval($product['cost'])*floatval($product['count']);
+        }
         return view("cart", $data);
     }
     public function create(Request $request)
@@ -41,32 +44,25 @@ class ProductsController extends Controller
     {
         $addToCartProductCode = $request->input("products_add_code");
         $addToCartProductCount = (double)$request->input("products_add_count");
-        // echo "<pre>";
-        //dd(session()->get('cart'));
         $bool = false;
         try{
             $product = Product::where('id', $addToCartProductCode)->firstOrFail();
             $productdetector = session()->pull('cart');
-            dd($productdetector);
-            for ($i = 0; $i < count($productdetector); $i++){
-                // echo($productdetector[$i]['id']." => ".$product['id']);
-                if($productdetector[$i]['id'] == $product['id']){
-                    $productdetector[$i]['count'] += $addToCartProductCount;
+            foreach(array_keys($productdetector) as $productPos){
+                if($productdetector[$productPos]['id'] == $product['id']){
+                    $productdetector[$productPos]['count'] += $addToCartProductCount;
                     $bool = true;
                 }
             }
-            if($bool == true){
-                session()->put('cart', $productdetector);
-            }else{
-                //dd(array_push($productdetector, ['id' => $product['id'], "name" => $product['name'], "cost" => $product['cost'], "count" => $addToCartProductCount]));
-                session()->put('cart', array_push($productdetector, ['id' => $product['id'], "name" => $product['name'], "cost" => $product['cost'], "count" => $addToCartProductCount]));
+            if(!$bool){
+                $productdetector[] = ['id' => $product['id'], "name" => $product['name'], "cost" => $product['cost'], "count" => $addToCartProductCount];
             }
+            
+            session()->put('cart', $productdetector);
         }
         catch(\Illuminate\Database\Eloquent\ModelNotFoundException $e){
-            //$request->session()->put('errors', 'There is no product with that code');
+            session()->put('errors', 'There is no product with that code');
         }
-        // var_dump(session()->get('cart'));
-        // echo "</pre>";
         return redirect()->route('cart.page');
     }
 
@@ -77,8 +73,30 @@ class ProductsController extends Controller
     }
     public function delete($id)
     {
-        $deleteProductPosition = session()->forget('cart', $id);
+        $deleteProductPosition = session()->pull('cart');
+        foreach(array_keys($deleteProductPosition) as $product){
+            if ($deleteProductPosition[$product]['id'] == $id)
+                unset($deleteProductPosition[$product]);
+        }
+        session()->put('cart', $deleteProductPosition);
         return redirect()->route('cart.page');
     }
 
+    public function paymentCard(Request $request)
+    {
+        $ses = Session::find(session()->get('session_id'));
+        $ses->card_total += (double) $request->input('totalSum');
+        $ses->save();
+        session()->put("cart", []);
+        return redirect()->route("cart.page");
+    }
+
+    public function paymentCash(Request $request)
+    {
+        $ses = Session::find(session()->get('session_id'));
+        $ses->cash_total += (double) $request->input('totalSum');
+        $ses->save();
+        session()->put("cart", []);
+        return redirect()->route("cart.page");
+    }
 }

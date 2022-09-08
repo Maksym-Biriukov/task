@@ -15,8 +15,9 @@
     <body>
         <div class="container text-center mt-3">
             <div class="position-absolute top-0 end-0 mt-2 me-3">
-                <form action="<?=route('logout');?>" method="post">
-                    <input type="submit"  class="btn btn-danger" name="logout_form" value="Logout" onclick="sessionStorage.clear()">
+                <form action="<?=route('manager.logout');?>" method="post">
+                    <input type="submit"  class="btn btn-danger" name="logout_form" value="Logout">
+                    <a href="{{route('sessions')}}" class="btn btn-success">Your sessions</a>
                 </form>
             </div>
             <div class="row">
@@ -27,6 +28,11 @@
                     <input class="btn btn-primary" type="submit" id="button-addon2" name="products_add_button"  value="Add   ">
                     </div>
                 </form>
+                @if (session()->has('errors'))
+                    <script>
+                        alert("{{session()->pull('errors')}}");
+                    </script>
+                @endif
                 <div class="col mt-3">
                     <table class="table table-bordered table_cart">
                         <th>
@@ -42,7 +48,7 @@
                         Cost     
                         </th>
                      <?php
-                        dd(session()->get('cart'));
+                        // dd(session()->get('cart'));
                         foreach (session()->get('cart') as $product){
                             ?>
 
@@ -73,7 +79,7 @@
                 
                     </table>
                     <form action="{{route('cart.clear')}}" method="post">
-                        <input type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#payment" onclick="total_payment()" value="Payment">
+                        <input type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#payment" value="Payment">
                         <input type="submit" class="btn btn-danger" value="Clear">
                     </form>
                 
@@ -83,13 +89,18 @@
                             <div class="modal-header">
                                 <h5 class="modal-title" id="paymentLabel">Total sum</h5>
                             </div>
-                            <div class="modal-body">
-                                <p class="total_sum_output" ></p>
-                            <input type="hidden" class="totalsum" value="sadasd">
+                            <div class="modal-body row justify-content-center">
+                                <p class="total_sum_output" >{{$totalSum}} PLN</p>
+                                <form action="{{route('payment.card')}}" method="post" class="col-2">
+                                    <input type="hidden" name="totalSum" value="{{$totalSum}}">
+                                    <input type="submit" class="btn btn-primary form-control" name="payment_type_card" value="Card">
+                                </form>
+                                <form action="{{route('payment.cash')}}" method="post" class="col-2">
+                                    <input type="hidden" name="totalSum" value="{{$totalSum}}">
+                                    <input type="submit" class="btn btn-primary form-control" name="payment_type_card" value="Cash">
+                                </form>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-primary form-control" name="payment_type_cash" onclick="total_cash(totalSum)">Cash</button>
-                                <button type="button" class="btn btn-primary form-control" name="payment_type_card" onclick="total_card(totalSum)">Card</button>
                                 <button type="button" class="btn btn-secondary form-control" data-bs-dismiss="modal">Close</button>    
                             </div>
                         </div>
