@@ -11,7 +11,7 @@ class Session extends Model
 
     public $timestamps = false;
 
-    protected $table = 'sesions';   
+    protected $table = 'sessions';   
 
     protected $fillable = [
         'id_manager',

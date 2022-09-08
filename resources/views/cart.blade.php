@@ -13,13 +13,12 @@
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     </head>
     <body>
-        <div class="container text-center mt-3">
-            <div class="position-absolute top-0 end-0 mt-2 me-3">
-                <form action="<?=route('manager.logout');?>" method="post">
-                    <input type="submit"  class="btn btn-danger" name="logout_form" value="Logout">
-                    <a href="{{route('sessions')}}" class="btn btn-success">Your sessions</a>
-                </form>
-            </div>
+        <form action="<?=route('manager.logout');?>" method="post" class="d-flex flex-row justify-content-end me-3 mt-2 gap-3">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addproduct">Add product</button>
+            <a href="{{route('sessions')}}" class="btn btn-success">Your sessions</a>
+            <input type="submit"  class="btn btn-danger" name="logout_form" value="Logout">
+        </form>
+        <div class="container text-center mt-3 ">
             <div class="row">
                 <form method="post" action="<?=route('cart.add')?>">
                     <div class="input-group">
@@ -33,7 +32,7 @@
                         alert("{{session()->pull('errors')}}");
                     </script>
                 @endif
-                <div class="col mt-3">
+                <div class=" mt-3">
                     <table class="table table-bordered table_cart">
                         <th>
                         SQU    
@@ -108,42 +107,11 @@
                     </div>
                     
                 </div>
-                <div class="col mt-3">
+                <div class="col-5">
                         @php 
                         // dd($errors);
                         @endphp
-                        
-                    
-                    <table class="table table-bordered all-products__table"><tr><th>SKU</th><th>Name</th><th>Count</th><th>Cost</th></tr>
-                    
-                        <?php
-                        
-                        foreach ($products as $product){
-                            ?>
-                            <tr>
-                                <td>
-                                <?=$product['id'];?>
-                                </td>
-                                <td>
-                                <?=$product['name'];?>
-                                </td>
-                                <td>
-                                <?=$product['count'];?>
-                                </td>
-                                <td>
-                                <?=$product['cost'];?>
-                                </td>
-                            </tr>
-                            
-                
-                            <?php
-                        }
-                        ;
-                        ?>
-                    </table>
-                
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addproduct">Add product</button>
-                
+
                     <div class="modal fade" id="addproduct" tabindex="-1" aria-labelledby="addproductLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">

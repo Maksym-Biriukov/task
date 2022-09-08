@@ -47,6 +47,7 @@ class ProductsController extends Controller
         $bool = false;
         try{
             $product = Product::where('id', $addToCartProductCode)->firstOrFail();
+            
             $productdetector = session()->pull('cart');
             foreach(array_keys($productdetector) as $productPos){
                 if($productdetector[$productPos]['id'] == $product['id']){
@@ -86,8 +87,15 @@ class ProductsController extends Controller
     {
         $ses = Session::find(session()->get('session_id'));
         $ses->card_total += (double) $request->input('totalSum');
-        $ses->save();
-        session()->put("cart", []);
+        $ses->save();       
+        $products = session()->pull('cart');
+        foreach($products as $product){
+            $productUpd = Product::find($product['id']);
+            $productUpd->count -= $product['count'];
+            $productUpd->save();
+
+        }
+        
         return redirect()->route("cart.page");
     }
 
@@ -96,7 +104,12 @@ class ProductsController extends Controller
         $ses = Session::find(session()->get('session_id'));
         $ses->cash_total += (double) $request->input('totalSum');
         $ses->save();
-        session()->put("cart", []);
+        $products = session()->pull('cart');
+        foreach($products as $product){
+            $productUpd = Product::find($product['id']);
+            $productUpd->count -= $product['count'];
+            $productUpd->save();
+        }
         return redirect()->route("cart.page");
     }
 }
