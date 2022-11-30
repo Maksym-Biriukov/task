@@ -14,10 +14,12 @@
     </head>
     <body>
         <form action="<?=route('manager.logout');?>" method="post" class="d-flex flex-row justify-content-end me-3 mt-2 gap-3">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addproduct">Add product</button>
             <a href="{{route('sessions')}}" class="btn btn-success">Your sessions</a>
+            <a href="{{route('all')}}" class="btn btn-success">All products</a>
+            <a href="{{route('allcoupons')}}" class="btn btn-success">All coupons</a>
             <input type="submit"  class="btn btn-danger" name="logout_form" value="Logout">
         </form>
+        <hr>    
         <div class="container text-center mt-3 ">
             <div class="row">
                 <form method="post" action="<?=route('cart.add')?>">
@@ -96,7 +98,11 @@
                                 </form>
                                 <form action="{{route('payment.cash')}}" method="post" class="col-2">
                                     <input type="hidden" name="totalSum" value="{{$totalSum}}">
-                                    <input type="submit" class="btn btn-primary form-control" name="payment_type_card" value="Cash">
+                                    <input type="submit" class="btn btn-primary form-control" name="payment_type_cash" value="Cash">
+                                </form>
+                                <form method="post"  action="{{route('payment.paypal')}}" class="col-3">
+                                    <input type="hidden" name="totalSum" value="{{$totalSum}}">     
+                                    <input type="submit" class="btn btn-primary form-control" name="payment_type_paypal" value="Pay Pal">
                                 </form>
                             </div>
                             <div class="modal-footer">
@@ -107,82 +113,9 @@
                     </div>
                     
                 </div>
-                <div class="col-5">
-                        @php 
-                        // dd($errors);
-                        @endphp
-
-                    <div class="modal fade" id="addproduct" tabindex="-1" aria-labelledby="addproductLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="addproductLabel">Add Product</h5>
-                                </div>
-                                <div class="modal-body">
-                                <form action="<?=route('product.create')?>" method="post">
-                                    <div class="input-group">
-                                        <input
-                                            required
-                                            type="text"
-                                            id="product_name_new"
-                                            name="product_name_new"
-                                            class="form-control"
-                                            placeholder="Product's name"
-                                        />
-                                        <input
-                                            required
-                                            type="text"
-                                            id="product_new_cost"
-                                            name="product_new_cost"
-                                            class="form-control"
-                                            placeholder="Cost"
-                                        />
-                                        <input
-                                            type="submit"
-                                            class="btn btn-primary"
-                                            id="product_add_new"
-                                            value="Add new product"
-                                            name="product_add_new"
-                                            
-                                        />
-                                    </div>
-                                </form>
-                                </div>
-                                <div class="modal-footer mb-3">
-                                    <form action="<?=route('product.add')?>" method="post">
-                                        <div class="input-group">
-                                            <input
-                                                required
-                                                type="text"
-                                                id="product_code"
-                                                name="product_code"
-                                                class="form-control"
-                                                placeholder="Product's code"
-                                            />
-                                            <input
-                                                required
-                                                type="text"
-                                                id="product_count"
-                                                name="product_count"
-                                                class="form-control"
-                                                placeholder="Count"
-                                            />
-                                            <input
-                                                type="submit"
-                                                class="btn btn-primary"
-                                                id="addProduct"
-                                                value="Add product's count"
-                                                name="product_count_form"
-                                                
-                                            />
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
         </div>
+       
     </body>
 </html>

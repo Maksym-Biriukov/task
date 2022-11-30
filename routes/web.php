@@ -27,19 +27,24 @@ Route::name("cart.")->prefix("/cart")->group(function(){
     Route::get("/", "App\Http\Controllers\ProductsController@get")->name("page");
     Route::post("/", "App\Http\Controllers\ProductsController@addToCart")->name("add");
     Route::post("/clear", "App\Http\Controllers\ProductsController@clear")->name("clear");
+    
     Route::get("/{id}/delete", "App\Http\Controllers\ProductsController@delete")->name("delete_position")->whereNumber('id');
 });
 
 Route::name("payment.")->prefix("/pay")->group(function(){
     Route::post("/card", "App\Http\Controllers\ProductsController@paymentCard")->name("card");
     Route::post("/cash", "App\Http\Controllers\ProductsController@paymentCash")->name("cash");
+    Route::post("/paypal", "App\Http\Controllers\PaymentController@payWithpaypal")->name("paypal");
 });
 
 Route::name("product.")->prefix("/product")->group(function(){
     Route::post("/create", "App\Http\Controllers\ProductsController@create")->name("create");
     Route::post("/add", "App\Http\Controllers\ProductsController@add")->name("add");
 });
-
+Route::get("/categories", "App\Http\Controllers\ProductsController@all")->name("all");
+Route::get("/coupons", "App\Http\Controllers\CouponsController@allcoupons" )->name("allcoupons");
+Route::post("/category/add", "App\Http\Controllers\ProductsController@catrgoryAdd")->name("catrgoryAdd");
 Route::get("/sessions", "App\Http\Controllers\SessionsController@history")->name("sessions");
+Route::get('status', "App\Http\Controllers\PaymentController@getPaymentSatatus")->name('status');
 
 Route::redirect('/home', '/')->name('home');

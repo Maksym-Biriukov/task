@@ -1,10 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Orders;
 use App\Models\Session;
+use App\Models\Categories;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\FeedbackMail;
 
 class ProductsController extends Controller
 {
@@ -20,12 +24,23 @@ class ProductsController extends Controller
     }
     public function create(Request $request)
     {
+        // $request->validate([
+        //     'products_image' => 'required|image|mimes:jpeg,jpg',
+        // ]);
+  
+        $imageName = time().'.'.$request->products_image->extension();  
+   
+        $request->products_image->move(storage_path('app/public/images'), $imageName);
+
+
         $addProductName = $request->input("product_name_new");
         $addProductCost = $request->input("product_new_cost");
-
+        $addCategoryId = $request->input("category_id");
         $product = Product::create([
             'name' => $addProductName,
-            'cost' => $addProductCost
+            'cost' => $addProductCost,
+            'picture_file_name' => $imageName,
+            'category_id' =>$addCategoryId,
         ]);
 
         return redirect()->route('cart.page');
@@ -89,12 +104,26 @@ class ProductsController extends Controller
         $ses->card_total += (double) $request->input('totalSum');
         $ses->save();       
         $products = session()->pull('cart');
+        $Order = Orders::create([
+            'id_session' => session()->get("session_id"),
+            'type' => 'card',
+            'total' => $request->input('totalSum'),
+        ]);
+        
         foreach($products as $product){
             $productUpd = Product::find($product['id']);
             $productUpd->count -= $product['count'];
             $productUpd->save();
+            $productsToOrder = DB::table('products_to_orders')->insert([
+                'id_order' => $Order['id'],
+                'id_product' => $product['id'],
+                'count' => $product['count']
+            ]);
 
         }
+        $comment = 'Это сообщение отправлено из формы обратной связи';
+        $toEmail = "qweeasdrftg2@ukr.net";
+        Mail::to($toEmail)->send(new FeedbackMail($comment));
         
         return redirect()->route("cart.page");
     }
@@ -105,11 +134,47 @@ class ProductsController extends Controller
         $ses->cash_total += (double) $request->input('totalSum');
         $ses->save();
         $products = session()->pull('cart');
+        $Order = Orders::create([
+            'id_session' => session()->get("session_id"),
+            'type' => 'cash',
+            'total' => $request->input('totalSum'),
+        ]);
         foreach($products as $product){
             $productUpd = Product::find($product['id']);
             $productUpd->count -= $product['count'];
             $productUpd->save();
+            $productsToOrder = DB::table('products_to_orders')->insert([
+                'id_order' => $Order['id'],
+                'id_product' => $product['id'],
+                'count' => $product['count']
+            ]);
+
         }
+        $comment = 'Это сообщение отправлено из формы обратной связи';
+        $toEmail = "postmaster@sandbox92f98cbc95e14ef58ae10352094dde94.mailgun.org"; 
+        Mail::to($toEmail)->send(new FeedbackMail($comment));
+        
         return redirect()->route("cart.page");
+    }
+
+    public function all(Request $request)
+    {   
+        $Products = DB::table('products')
+        ->leftJoin('categories', 'products.category_id', '=', 'categories.id')
+        ->get();
+        $data = [];
+        $data['products'] = $Products;
+        
+        return view("allProducts", $data);
+    }
+    public function catrgoryAdd(Request $request)
+    {
+        $addCategory = $request->input("category_name");
+        
+        $category = Categories::create([
+            'category' => $addCategory,
+        ]);
+        
+        return redirect()->route("all");
     }
 }
